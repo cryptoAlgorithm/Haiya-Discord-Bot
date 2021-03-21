@@ -1,6 +1,8 @@
 const { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } = require('discord-akairo');
 const logger = require('./logger');
 
+const { serve } = require('./server');
+
 class MainClient extends AkairoClient {
     constructor() {
         super({
@@ -42,7 +44,11 @@ class MainClient extends AkairoClient {
     }
 }
 
+// Start server
+serve();
+
 const client = new MainClient();
+
 client.login(process.env.DISCORD_KEY).then(() => {
     logger.info('Logged In');
 
