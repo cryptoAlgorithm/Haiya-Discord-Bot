@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "discord-akairo": "^8.1.0",
+    "discord.js": "^12.5.1",
+    "snoowrap": "^1.22.0",
+    "winston": "^3.3.3"
+  },
+  "name": "unnuke-discord",
+  "version": "0.1.0",
+  "description": "Server Maintanence",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo 'Coming soon!' && exit 0",
+    "start": "node main.js"
+  },
+  "keywords": [
+    "die-no",
+    "haiya",
+    "unfarker"
+  ],
+  "author": "CryptoAlgo Team",
+  "license": "GPL-3.0-or-later"
+}
