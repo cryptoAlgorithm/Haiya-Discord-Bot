@@ -58,15 +58,56 @@ class SpamPing extends Command {
             '#5d11d7', '#8b11d7', '#c311d7', '#d7118e'
         ];
 
+        const sMessages = []
+
         for (let i = 0; i < args.numTimes; i++) {
-            await (await message.channel.send(`${args.usr} I'm **Nicholas!** ${args.usr}`, new MessageEmbed()
+            const msg = await message.channel.send(`${args.usr} I'm **Nicholas!** ${args.usr}`, new MessageEmbed()
                 .setTitle((i + 1) + '. Are you having a nice day? I\'m Nicholas!')
                 .setDescription(args.usr)
                 .setColor(random.choice(cols))
-                .setTimestamp())).react(':okkk:822736764220473374');
+                .setTimestamp());
+            await msg.react(':okkk:822736764220473374');
+
+            sMessages.push(msg);
         }
 
-        await message.channel.send('I\'m done spamming. <:okkk:822736764220473374>');
+        // Listen for wastebasket reaction for 30 secs
+        const doneMsg = await message.channel.send(
+            new MessageEmbed()
+                .setTitle(`I'm done spamming.`)
+                .setDescription('React with 🗑️ in the next 30 secs to delete all spam messages (ghost ping)')
+                .setColor('#ff9900')
+                .setTimestamp()
+                .setAuthor('Haiya',
+                    'https://cdn.discordapp.com/app-icons/822752007298744340/ccb7c064b68bd7a04ee557b496501e7f.png')
+        );
+        await doneMsg.react('🗑️');
+
+        const filter = (reaction, user) => {
+            return ['🗑️'].includes(reaction.emoji.name) && user.id === message.author.id;
+        };
+
+        doneMsg.awaitReactions(filter,
+            { max: 1, time: 30000, errors: ['time'] })
+            .then(async () => {
+                // Delete prompt msg to reduce spam
+                await doneMsg.delete();
+
+                const msg = await message.reply(new MessageEmbed()
+                    .setTitle('Deleting all spam-ping messages...')
+                    .setColor('#d71111')
+                    .setTimestamp()
+                    .setAuthor('Haiya',
+                        'https://cdn.discordapp.com/app-icons/822752007298744340/ccb7c064b68bd7a04ee557b496501e7f.png'));
+                for (const message of sMessages) await message.delete();
+                msg.edit(new MessageEmbed()
+                    .setTitle('Deleted all spam-ping messages...')
+                    .setColor('#06b300')
+                    .setTimestamp()
+                    .setAuthor('Haiya',
+                        'https://cdn.discordapp.com/app-icons/822752007298744340/ccb7c064b68bd7a04ee557b496501e7f.png'))
+            })
+            .catch();
 
         return (await message.util.reply('Finished spamming.')).react('😄');
     }

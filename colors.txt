@@ -1,0 +1,4 @@
+RED (warn) => #d71111
+Green (ok) => #06b300
+Orange (act) => #ff9900
+Blue (info) => #0099ff

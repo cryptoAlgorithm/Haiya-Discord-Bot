@@ -38,9 +38,10 @@ class MainClient extends AkairoClient {
         });
 
         this.commandHandler.useListenerHandler(this.listenerHandler);
+        this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
         this.commandHandler.loadAll();
         this.listenerHandler.loadAll();
-
+        this.inhibitorHandler.loadAll();
     }
 }
 
