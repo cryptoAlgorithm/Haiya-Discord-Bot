@@ -49,7 +49,7 @@ class SpamPing extends Command {
     }
 
     async exec(message, args) {
-        await message.util.reply('Starting to spam ping...');
+        const initMsg = await message.util.reply('Starting to spam ping...');
 
         logger.verbose(`User ${args.usr} is getting spam pinged ${args.numTimes} times!`);
 
@@ -92,6 +92,7 @@ class SpamPing extends Command {
             .then(async () => {
                 // Delete prompt msg to reduce spam
                 await doneMsg.delete();
+                await initMsg.delete()
 
                 const msg = await message.reply(new MessageEmbed()
                     .setTitle('Deleting all spam-ping messages...')
@@ -109,7 +110,7 @@ class SpamPing extends Command {
             })
             .catch();
 
-        return (await message.util.reply('Finished spamming.')).react('😄');
+        return initMsg.edit('Finished spamming.');
     }
 }
 
